@@ -1,7 +1,7 @@
 class Api::V1::GameController < ApplicationController
   def create
-    Game.create(ship_params)
-    render json: {'something': 'here'}
+    game = Game.create()
+    render json: GameSerializer.new(game).serialized_json
   end
 
   private
