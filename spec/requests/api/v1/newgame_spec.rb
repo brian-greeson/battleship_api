@@ -10,12 +10,20 @@ RSpec.describe "when a client request a newgame" do
         'cruiser': 'd1,d2,d3',
         'destroyer': 'e1,e2'
       }
-      post "/api/v1/newgame", params: ship_locations
+      post "/api/v1/newgame"
       expect(response).to be_successful
 
       game_response = JSON.parse(response.body, symbolize_names: true)
+      game_attributes = game_response[:data][:attributes]
+      expect(game_response[:data][:type]).to eq("game")
+      expect(game_attributes[:status]).to eq("waiting for client")
+      expect(game_attributes[:api_board][:board_size]).to eq(5)
+      expect(game_attributes[:client_board][:board_size]).to eq(5)
+      expect(game_attributes[:api_board][:hits]).to eq(nil)
+      expect(game_attributes[:client_board][:hits]).to eq(nil)
+      expect(game_attributes[:api_board][:misses]).to eq(nil)
+      expect(game_attributes[:client_board][:misses]).to eq(nil)
 
-      
 
     end
 
